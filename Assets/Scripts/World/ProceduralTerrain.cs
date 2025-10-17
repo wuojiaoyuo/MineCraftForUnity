@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using MineCraft;
 using UnityEngine;
 
 /// <summary>
-/// 世界生成
+/// 世界生成试验
 /// </summary>
 public class ProceduralTerrain : MonoBehaviour
 {
