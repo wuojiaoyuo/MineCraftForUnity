@@ -24,7 +24,7 @@
 
 > `Sand`:灰色、`Grass_Dirt`:绿色、`Dirt`:黄色、`Water`:蓝色
 
-![image-20251017082040415](.\MineCraftForUnity\README.assets\image-20251017082040415.png)
+![image-20251017082040415](.\README.assets\image-20251017082040415.png)
 
 虽然模拟实现了地形区块生成的过程，但是地形过大的时候会导致游戏性能开销极大，因此方法只能作为一个最初的思路（也许还有其他方向？）。
 
