@@ -54,7 +54,7 @@
 >
 > - https://minecraft.fandom.com/zh/wiki/%E5%8C%BA%E5%9D%97
 >
-> ![latest (手机)](README/latest (手机).png)
+> ![latest](README/latest.png)
 
 
 
