@@ -6,8 +6,20 @@
 </div>
 
 
+## 功能清单
 
-## 地图生成
+- [ ] 地形生成
+- [ ] 方块编辑
+- [ ] 人物控制
+- [ ] 工具使用
+  - [ ] 稿子
+  - [ ] 剑
+  - [ ] 斧头
+- [ ] 多人联机
+
+
+
+## 地图生成-2015.10.17
 
 ### 初步试验
 
@@ -62,7 +74,7 @@
 
 ### 过程
 
-#### [MeshData](Assets\Scripts\World\Face\MeshData.cs)
+#### [MeshData](Assets/Scripts/WorldGenerateByCatNine/Face/MeshData.cs)
 
 用来保存一个Face所需要的信息（顶点、三角面和UV）以及动态生成Mesh
 
@@ -74,19 +86,19 @@
 
 ![image-20251017150440883](README/image-20251017150440883.png)
 
-#### [ChunkRenderer](Assets\Scripts\World\Chunk\ChunkRenderer.cs)
+#### [ChunkRenderer](Assets/Scripts/WorldGenerateByCatNine/Chunk/ChunkRenderer.cs)
 
 > - 这里我认为方块仍然需要一个类来创建不同方块的功能与交互逻辑，在后续考虑是否需要添加...
 
 因为是在生成Chunk时，在Chunk内部做二重循环去生成`Block`，所以没有必要单独写一个Block类，至于`BlockHelper`主要是为了进行面优化，所以需要考虑`Block`的所有邻居`Block`的状态，就需要把Chunk类先写出来才能是心啊`BlockHelper`，而`Chunk`类则需要`ChunkData`和`ChunkRnderer`两个类.
 
-[ChunkData](Assets\Scripts\World\Data.cs)
+[ChunkData](Assets/Scripts/WorldGenerateByCatNine/Data.cs)
 
 `ChunkRenderer`的主要作用就是选软Chunk，就是根据`MeshData`去生成Mesh，但是需要注意把Block分为MainBlock和WaterBlock，为了减少开销，在一个物体上生成两个SubMesh，利用一个SubMesh对应一个Mererial的性质去分别生成两种Block。
 
 
 
-#### [Chunk](Assets\Scripts\World\Chunk\Chunk.cs)
+#### [Chunk](Assets/Scripts/WorldGenerateByCatNine/Chunk/Chunk.cs)
 
 "目前还没有任何一个类去填充`MeshData`(即`MeshData`的顶点List，三角形List等还没有数据)。所以我们将会在`BlockHelper`中进行`MeshData`的填充(因为`BlockHelper`是细化到`Chunk`中每个Block的每个面)，而今天要写的Chunk脚本更像是一个辅助类去提供一些便利的方法供BlockHelper调用以便更好在Chunk内遍历时填充数据。"
 
@@ -105,24 +117,21 @@
 
 “我们在生成了Face的顶点和三角形数据后，还需要给其每个面贴上贴图。贴贴图实际上就是利用纹理映射将图片和Mesh上的点一一对应。由于每个不同类型的Block的贴图都不一样，我们首先要把BlockType和图片进行对应，为了实现上述功能，我们声明一个继承于ScriptableObject的BlockData类来保存图片上的UV信息。然后在BlockManager类去统一管理UV信息。”
 
+#### [BlockHelper](Assets/Scripts/WorldGenerateByCatNine/Block/BlockHelper.cs)
 
+“前面的多篇文章都提到了BlockHelper这个类，之所以它会出现在很多地方，因为它是这个项目的核心之一，前面编写的很多脚本都是为它做铺垫的。在思维导图中我们看到BlockHelper是对Chunk进行面优化的。那么它是如何实现面优化的呢？我们结合着代码来解释。”
+
+![img](README/v2-8aca5491b96607da36d28c7df8568851_1440w-1760711520339-7.jpg)
+
+![img](README/v2-555503cfc215b8157460ce02f4773a92_1440w.jpg)
+
+#### [World](Assets/Scripts/WorldGenerateByCatNine/World/World.cs)
+
+顾名思义，它就是负责将我们的地形在Unity中生成出来。
 
 ### 最后
 
-作者的方法可以有效的提供一种地形优化渲染的方案，但是该方法生成后Chunk之间的方块存在渲染问题，需要对边界做处理，同时如何获取方块和方块交互还需要思考，需要验证方法是否可行。
-
-
-
-## 功能清单
-
-- [ ] 地形生成
-- [ ] 方块编辑
-- [ ] 人物控制
-- [ ] 工具使用
-  - [ ] 稿子
-  - [ ] 剑
-  - [ ] 斧头
-- [ ] 多人联机
+作者的方法可以有效的提供一种地形优化渲染的方案，但是该方法生成后Chunk之间的方块存在渲染问题，需要对边界做处理，同时如何获取方块和方块交互还需要思考，需要验证方法是否可行。但是对表面剔除和合并Chunk渲染的方式值得学习。
 
 
 
