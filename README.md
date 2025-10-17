@@ -56,11 +56,60 @@
 >
 > ![latest](README/latest.png)
 
+原作者脚本设计思路：
+
+![img](README/v2-fbbe7e11e87dfe49abbabd74270dfaa4_1440w.jpg)
+
+### 过程
+
+#### [MeshData](Assets\Scripts\World\Face\MeshData.cs)
+
+用来保存一个Face所需要的信息（顶点、三角面和UV）以及动态生成Mesh
+
+在创建过程考虑到水这类半透明且没有碰撞的方块
 
 
 
+顶点添加图示
 
-## 方块编辑器
+![image-20251017150440883](README/image-20251017150440883.png)
+
+#### [ChunkRenderer](Assets\Scripts\World\Chunk\ChunkRenderer.cs)
+
+> - 这里我认为方块仍然需要一个类来创建不同方块的功能与交互逻辑，在后续考虑是否需要添加...
+
+因为是在生成Chunk时，在Chunk内部做二重循环去生成`Block`，所以没有必要单独写一个Block类，至于`BlockHelper`主要是为了进行面优化，所以需要考虑`Block`的所有邻居`Block`的状态，就需要把Chunk类先写出来才能是心啊`BlockHelper`，而`Chunk`类则需要`ChunkData`和`ChunkRnderer`两个类.
+
+[ChunkData](Assets\Scripts\World\Data.cs)
+
+`ChunkRenderer`的主要作用就是选软Chunk，就是根据`MeshData`去生成Mesh，但是需要注意把Block分为MainBlock和WaterBlock，为了减少开销，在一个物体上生成两个SubMesh，利用一个SubMesh对应一个Mererial的性质去分别生成两种Block。
+
+
+
+#### [Chunk](Assets\Scripts\World\Chunk\Chunk.cs)
+
+"目前还没有任何一个类去填充`MeshData`(即`MeshData`的顶点List，三角形List等还没有数据)。所以我们将会在`BlockHelper`中进行`MeshData`的填充(因为`BlockHelper`是细化到`Chunk`中每个Block的每个面)，而今天要写的Chunk脚本更像是一个辅助类去提供一些便利的方法供BlockHelper调用以便更好在Chunk内遍历时填充数据。"
+
+1. `LoopThroughTheBlocks` - 区块遍历
+2. `GetPostitionFromIndex` - 索引到坐标转换
+3. `GetIndexFromPosition` - 坐标到索引转换
+4. 边界检查方法
+   1. `InRange`：检查X和Z轴是否在区块范围内
+   2. `InRangeHeight`：检查Y轴是否在高度范围内
+5. `GetBlockFromChunkCoordinates` - 获取方块类型
+6. `SetBlock` - 设置方块类型
+7. `GetChunkMeshData` - 生成网格数据
+8. `ChunkPositionFromBlockCoords` - 世界坐标到区块坐标
+
+#### Face与贴图
+
+“我们在生成了Face的顶点和三角形数据后，还需要给其每个面贴上贴图。贴贴图实际上就是利用纹理映射将图片和Mesh上的点一一对应。由于每个不同类型的Block的贴图都不一样，我们首先要把BlockType和图片进行对应，为了实现上述功能，我们声明一个继承于ScriptableObject的BlockData类来保存图片上的UV信息。然后在BlockManager类去统一管理UV信息。”
+
+
+
+### 最后
+
+作者的方法可以有效的提供一种地形优化渲染的方案，但是该方法生成后Chunk之间的方块存在渲染问题，需要对边界做处理，同时如何获取方块和方块交互还需要思考，需要验证方法是否可行。
 
 
 
