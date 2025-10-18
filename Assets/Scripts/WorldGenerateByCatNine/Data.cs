@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace MineCraft
+namespace WorldGenerateByCatNine
 {
     /// <summary>
     /// 方向
