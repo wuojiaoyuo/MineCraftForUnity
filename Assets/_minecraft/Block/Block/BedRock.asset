@@ -31,9 +31,9 @@ MonoBehaviour:
     LightValue: 0
     Hardness: -1
   blockTexture:
-    forward: {fileID: 0}
-    backwards: {fileID: 0}
-    up: {fileID: 0}
-    down: {fileID: 0}
-    right: {fileID: 0}
-    left: {fileID: 0}
+    forward: {fileID: 2800000, guid: e0ab20539c8ac0b418a16a0701020ac7, type: 3}
+    backwards: {fileID: 2800000, guid: e0ab20539c8ac0b418a16a0701020ac7, type: 3}
+    up: {fileID: 2800000, guid: e0ab20539c8ac0b418a16a0701020ac7, type: 3}
+    down: {fileID: 2800000, guid: e0ab20539c8ac0b418a16a0701020ac7, type: 3}
+    right: {fileID: 2800000, guid: e0ab20539c8ac0b418a16a0701020ac7, type: 3}
+    left: {fileID: 2800000, guid: e0ab20539c8ac0b418a16a0701020ac7, type: 3}
