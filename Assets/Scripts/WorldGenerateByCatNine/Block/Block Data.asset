@@ -12,48 +12,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d69c64638d9dc642b5bdb2a0d145dbe, type: 3}
   m_Name: Block Data
   m_EditorClassIdentifier: 
-  textureSizeX: 0
-  textureSizeY: 0
+  textureSizeX: 0.2
+  textureSizeY: 0.2
   textureDataList:
   - blockType: 0
-    up: {x: 0, y: 0}
-    down: {x: 0, y: 0}
-    side: {x: 0, y: 0}
+    up: {x: 1, y: 1}
+    down: {x: 1, y: 1}
+    side: {x: 1, y: 1}
     isSolid: 0
     generatesCollider: 0
   - blockType: 1
-    up: {x: 0, y: 0}
-    down: {x: 0, y: 0}
-    side: {x: 0, y: 0}
+    up: {x: 3, y: 3}
+    down: {x: 3, y: 3}
+    side: {x: 3, y: 3}
     isSolid: 0
     generatesCollider: 0
   - blockType: 2
-    up: {x: 0, y: 0}
-    down: {x: 0, y: 0}
-    side: {x: 0, y: 0}
+    up: {x: 5, y: 5}
+    down: {x: 5, y: 5}
+    side: {x: 5, y: 5}
     isSolid: 1
     generatesCollider: 1
   - blockType: 3
-    up: {x: 0, y: 0}
-    down: {x: 0, y: 0}
-    side: {x: 0, y: 0}
+    up: {x: 7, y: 7}
+    down: {x: 7, y: 7}
+    side: {x: 7, y: 7}
     isSolid: 1
     generatesCollider: 1
   - blockType: 4
-    up: {x: 0, y: 0}
-    down: {x: 0, y: 0}
-    side: {x: 0, y: 0}
+    up: {x: 9, y: 9}
+    down: {x: 9, y: 9}
+    side: {x: 9, y: 9}
     isSolid: 1
     generatesCollider: 1
   - blockType: 5
-    up: {x: 0, y: 0}
-    down: {x: 0, y: 0}
-    side: {x: 0, y: 0}
+    up: {x: 11, y: 11}
+    down: {x: 11, y: 11}
+    side: {x: 11, y: 11}
     isSolid: 0
     generatesCollider: 0
   - blockType: 6
-    up: {x: 0, y: 0}
-    down: {x: 0, y: 0}
-    side: {x: 0, y: 0}
+    up: {x: 6, y: 6}
+    down: {x: 6, y: 6}
+    side: {x: 6, y: 6}
     isSolid: 1
     generatesCollider: 1

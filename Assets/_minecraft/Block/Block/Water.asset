@@ -27,7 +27,13 @@ MonoBehaviour:
     ID: minecraft:water
     BlockFlags: 23
     MoveResistance: 0
-    LightOpacity: 0
+    LightOpacity: 0.5
     LightValue: 0
     Hardness: -1
-    DestoryEffectColor: {r: 0.14509805, g: 0.34901962, b: 1, a: 1}
+  blockTexture:
+    up: {fileID: 2800000, guid: 54bb8a33821d11c4a8ca0cc7ca78a523, type: 3}
+    down: {fileID: 2800000, guid: 54bb8a33821d11c4a8ca0cc7ca78a523, type: 3}
+    side_0: {fileID: 2800000, guid: 54bb8a33821d11c4a8ca0cc7ca78a523, type: 3}
+    side_1: {fileID: 0}
+    side_2: {fileID: 0}
+    side_3: {fileID: 0}

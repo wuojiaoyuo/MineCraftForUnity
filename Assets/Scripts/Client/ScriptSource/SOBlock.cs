@@ -7,6 +7,7 @@ namespace MC.Configurations
     public class SOBlock : SerializedScriptableObject
     {
         public BlockProperties blockProperties;
+        public BlockTexture blockTexture;
 
     }
 }

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8920296e0d517343a11c599ff209ca8, type: 3}
-  m_Name: Sand
+  m_Name: BedRock
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -22,18 +22,18 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   blockProperties:
-    Icon: {fileID: 2800000, guid: 24c88c54f2e5ea344b3b8bc0c4c24976, type: 3}
-    Block_Name: Sand
-    ID: minecraft:sand
-    BlockFlags: 0
+    Icon: {fileID: 2800000, guid: e0ab20539c8ac0b418a16a0701020ac7, type: 3}
+    Block_Name: BedRock
+    ID: minecraft:bedrock
+    BlockFlags: 24
     MoveResistance: 0.6
     LightOpacity: 0
     LightValue: 0
-    Hardness: 4
+    Hardness: -1
   blockTexture:
-    up: {fileID: 2800000, guid: 24c88c54f2e5ea344b3b8bc0c4c24976, type: 3}
-    down: {fileID: 2800000, guid: 24c88c54f2e5ea344b3b8bc0c4c24976, type: 3}
-    side_0: {fileID: 2800000, guid: 24c88c54f2e5ea344b3b8bc0c4c24976, type: 3}
-    side_1: {fileID: 0}
-    side_2: {fileID: 0}
-    side_3: {fileID: 0}
+    forward: {fileID: 0}
+    backwards: {fileID: 0}
+    up: {fileID: 0}
+    down: {fileID: 0}
+    right: {fileID: 0}
+    left: {fileID: 0}

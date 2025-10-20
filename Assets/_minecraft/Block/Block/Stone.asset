@@ -22,7 +22,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   blockProperties:
-    Icon: {fileID: 2800000, guid: ae48530076272964da69c13d6f614223, type: 3}
+    Icon: {fileID: 2800000, guid: 24c88c54f2e5ea344b3b8bc0c4c24976, type: 3}
     Block_Name: Stone
     ID: minecraft:stone
     BlockFlags: 0
@@ -30,4 +30,10 @@ MonoBehaviour:
     LightOpacity: 0
     LightValue: 0
     Hardness: 4
-    DestoryEffectColor: {r: 0.47450984, g: 0.4784314, b: 0.47450984, a: 1}
+  blockTexture:
+    up: {fileID: 2800000, guid: ae48530076272964da69c13d6f614223, type: 3}
+    down: {fileID: 2800000, guid: ae48530076272964da69c13d6f614223, type: 3}
+    side_0: {fileID: 2800000, guid: ae48530076272964da69c13d6f614223, type: 3}
+    side_1: {fileID: 0}
+    side_2: {fileID: 0}
+    side_3: {fileID: 0}

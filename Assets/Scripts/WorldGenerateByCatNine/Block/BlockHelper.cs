@@ -55,7 +55,8 @@ namespace WorldGenerateByCatNine
                 BlockType neighbourBlockType = Chunk.GetBlockFromChunkCoordinates(chunk, neighbourBlockCoordinates);//获取邻居Block的类型
 
                 //优化部分
-                if (neighbourBlockType != BlockType.Nothing && BlockDataManager.blockTextureDataDictionary[neighbourBlockType].isSolid == false)
+                //if (neighbourBlockType != BlockType.Nothing && BlockDataManager.blockTextureDataDictionary[neighbourBlockType].isSolid == false)
+                if (BlockDataManager.blockTextureDataDictionary[neighbourBlockType].isSolid == false)
                 {
                     if (blockType == BlockType.Water)
                     {

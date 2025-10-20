@@ -41,9 +41,9 @@ namespace MC.Configurations
         [LabelText("硬度"), ProgressBar(-1, 10, 0, 1, 0, Segmented = true)]
         public int Hardness;
 
-        [LabelText("破坏效果颜色")]
-        public Color DestoryEffectColor;
-        //TODO:ExtraAsset
+        // [LabelText("破坏效果颜色")]
+        // public Color DestoryEffectColor;
+        // //TODO:ExtraAsset
     }
 
 }
