@@ -9,8 +9,8 @@
 ## 功能清单
 
 - [ ] 方块数据
-  - [ ] 方块类型
-  - [ ] 方块属性
+  - [x] 方块类型
+  - [x] 方块属性
   - [ ] 纹理索引管理
   - [ ] 方块编辑器
 
@@ -173,5 +173,3 @@
 - https://developer.unity.cn/projects/5f35326fedbc2a002071984d
   - https://github.com/Jin-Yuhan/MinecraftClone-Unity
 - https://zhuanlan.zhihu.com/p/571622819
-
-- 【【Unity教程搬运】如何在Unity中创建Minecraft：终极指南 (2024)】 https://www.bilibili.com/video/BV1cJ4m137oj/?share_source=copy_web&vd_source=03b89d7c0f287bbb21e7897d1e86a944

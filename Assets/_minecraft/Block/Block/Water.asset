@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8920296e0d517343a11c599ff209ca8, type: 3}
+  m_Name: Water
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
+  blockProperties:
+    Icon: {fileID: 2800000, guid: 54bb8a33821d11c4a8ca0cc7ca78a523, type: 3}
+    Block_Name: Water
+    ID: minecraft:water
+    BlockFlags: 23
+    MoveResistance: 0
+    LightOpacity: 0
+    LightValue: 0
+    Hardness: -1
+    DestoryEffectColor: {r: 0.14509805, g: 0.34901962, b: 1, a: 1}

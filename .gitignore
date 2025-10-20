@@ -3,6 +3,10 @@ Library/
 Logs/
 Temp/
 UserSettings/
+Assets/Plugins/Sirenix/Demos/
 Assembly-CSharp.csproj
 Assembly-CSharp-Editor.csproj
+Assembly-CSharp-Editor-firstpass.csproj
+Assembly-CSharp-firstpass.csproj
+Sirenix.OdinInspector.Modules.UnityMathematics.csproj
 MineCraftForUnity.sln
