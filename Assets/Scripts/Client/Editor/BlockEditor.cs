@@ -29,14 +29,20 @@ namespace MC.Configurations
             tree.DefaultMenuStyle.IconSize = 28.00f;
             tree.Config.DrawSearchToolbar = true;
 
-            SOBLockOverview.Instance.UpdateSOBlockOverview();
-            tree.Add("Blocks", new BlockTable(SOBLockOverview.Instance.AllSOBlocks));
+            BlockTypeOverview.Instance.UpdateBlockTypeOverview();
+            tree.Add("Blocks", new BlockTable(BlockTypeOverview.Instance.AllBlockTypes));
 
-            tree.AddAllAssetsAtPath("Blocks", "Assets/_minecraft/", typeof(SOBlock), true, true);
+            tree.AddAllAssetsAtPath("Blocks", "Assets/_minecraft/Block/Block", typeof(BlockType), true, true);
 
-            tree.EnumerateTree().Where(x => x.Value as SOBlock).ForEach(AddDragHandles);
+            tree.AddAllAssetsAtPath("", "Assets/_minecraft/Block/", typeof(BlockMeshData), true)
+                .ForEach(this.AddDragHandles);
+            tree.AddAllAssetsAtPath("", "Assets/_minecraft/Block/", typeof(Texture2D), true)
+                .ForEach(this.AddDragHandles);
 
-            tree.EnumerateTree().AddIcons<SOBlock>(x => x.blockProperties.Icon);
+            tree.EnumerateTree().Where(x => x.Value as BlockType).ForEach(AddDragHandles);
+
+            tree.EnumerateTree().AddIcons<BlockType>(x => x.blockProperties.Icon);
+            tree.EnumerateTree().AddIcons<Texture2D>(x => x);
 
             return tree;
         }
@@ -58,7 +64,7 @@ namespace MC.Configurations
                 }
                 if (SirenixEditorGUI.ToolbarButton(new GUIContent("Create Block")))
                 {
-                    ScriptableObjectCreator.ShowDialog<SOBlock>("Assets/_minecraft/Block/Block", obj =>
+                    ScriptableObjectCreator.ShowDialog<BlockType>("Assets/_minecraft/Block/Block", obj =>
                     {
                         obj.blockProperties.Block_Name = obj.name;
                         base.TrySelectMenuItemWithObject(obj); // Selects the newly created item in the editor
@@ -73,17 +79,17 @@ namespace MC.Configurations
 
     #region OBLockOverview
     [GlobalConfig("Assets/_minecraft/Block/Blocks")]
-    public class SOBLockOverview : GlobalConfig<SOBLockOverview>
+    public class BlockTypeOverview : GlobalConfig<BlockTypeOverview>
     {
         [ReadOnly]
         [ListDrawerSettings(ShowFoldout = true)]
-        public SOBlock[] AllSOBlocks;
+        public BlockType[] AllBlockTypes;
 #if UNITY_EDITOR
         [Button(ButtonSizes.Medium), PropertyOrder(-1)]
-        public void UpdateSOBlockOverview()
+        public void UpdateBlockTypeOverview()
         {
-            this.AllSOBlocks = AssetDatabase.FindAssets("t:SOBlock")
-            .Select(guid => AssetDatabase.LoadAssetAtPath<SOBlock>(AssetDatabase.GUIDToAssetPath(guid)))
+            this.AllBlockTypes = AssetDatabase.FindAssets("t:BlockType")
+            .Select(guid => AssetDatabase.LoadAssetAtPath<BlockType>(AssetDatabase.GUIDToAssetPath(guid)))
             .ToArray();
         }
 #endif
@@ -99,12 +105,12 @@ namespace MC.Configurations
         [TableList(IsReadOnly = true, AlwaysExpanded = true), ShowInInspector]
         private readonly List<BlockWrapper> allBlocks;
 
-        public SOBlock this[int index]
+        public BlockType this[int index]
         {
-            get { return this.allBlocks[index].SOBlock; }
+            get { return this.allBlocks[index].BlockType; }
         }
 
-        public BlockTable(IEnumerable<SOBlock> blocks)
+        public BlockTable(IEnumerable<BlockType> blocks)
         {
             this.allBlocks = blocks.Select(x => new BlockWrapper(x)).ToList();
         }
@@ -112,14 +118,14 @@ namespace MC.Configurations
         #region BlockWrapper
         private class BlockWrapper
         {
-            private SOBlock soBlock;
+            private BlockType soBlock;
 
-            public SOBlock SOBlock
+            public BlockType BlockType
             {
                 get { return this.soBlock; }
             }
 
-            public BlockWrapper(SOBlock soBlock)
+            public BlockWrapper(BlockType soBlock)
             {
                 this.soBlock = soBlock;
             }
@@ -139,9 +145,9 @@ namespace MC.Configurations
             public float MoveResistance { get { return this.soBlock.blockProperties.MoveResistance; } set { this.soBlock.blockProperties.MoveResistance = value; EditorUtility.SetDirty(this.soBlock); } }
             [ShowInInspector, ProgressBar(0, 1)]
             public float LightOpacity { get { return this.soBlock.blockProperties.LightOpacity; } set { this.soBlock.blockProperties.LightOpacity = value; EditorUtility.SetDirty(this.soBlock); } }
-            [ShowInInspector, ProgressBar(0,10,0,1,0, Segmented = true)]
+            [ShowInInspector, ProgressBar(0, 10, 0, 1, 0, Segmented = true)]
             public int LightValue { get { return this.soBlock.blockProperties.LightValue; } set { this.soBlock.blockProperties.LightValue = value; EditorUtility.SetDirty(this.soBlock); } }
-             [ShowInInspector, ProgressBar(-1,10,0,1,0, Segmented = true)]
+            [ShowInInspector, ProgressBar(-1, 10, 0, 1, 0, Segmented = true)]
             public int Hardness { get { return this.soBlock.blockProperties.Hardness; } set { this.soBlock.blockProperties.Hardness = value; EditorUtility.SetDirty(this.soBlock); } }
         }
         #endregion

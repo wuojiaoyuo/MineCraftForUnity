@@ -7,13 +7,20 @@ namespace MC
     public class Block : MonoBehaviour
     {
         [LabelText("方块类型")]
-        public SOBlock sOBlock;
+        public BlockType blockType;
         [LabelText("显示的面")]
+        [EnumToggleButtons]
         public ShowDirection showDirection;
         BlockRender blockRender;
         void Start()
         {
-            blockRender = new BlockRender(GetComponent<MeshFilter>(), GetComponent<MeshRenderer>(), sOBlock, showDirection);
+            // blockRender = new BlockRender(GetComponent<MeshFilter>(), GetComponent<MeshRenderer>(), blockType, showDirection);
+            //  gameObject.AddComponent<MeshCollider>().sharedMesh = blockRender.GetMesh();
+        }
+        public void Render(Vector3Int pos)
+        {
+            transform.position = pos;
+            blockRender = new BlockRender(GetComponent<MeshFilter>(), GetComponent<MeshRenderer>(), blockType, showDirection);
             gameObject.AddComponent<MeshCollider>().sharedMesh = blockRender.GetMesh();
         }
 #if UNITY_EDITOR

@@ -24,6 +24,10 @@ namespace MC.Configurations
         [VerticalGroup("Split/Meta")]
         public BlockFlags BlockFlags;
 
+        [LabelText("Mesh类型")]
+        [VerticalGroup("Split/Meta")]
+        public BlockMeshData blockMesh;
+
 
         [VerticalGroup("Split/Meta2")]
         [LabelText("阻力系数"), ProgressBar(0, 1)]

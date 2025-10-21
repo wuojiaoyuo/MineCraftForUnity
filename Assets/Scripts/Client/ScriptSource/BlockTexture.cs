@@ -1,6 +1,5 @@
 using System;
 using Sirenix.OdinInspector;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace MC.Configurations
@@ -9,23 +8,23 @@ namespace MC.Configurations
     public class BlockTexture
     {
         [HorizontalGroup("Split")]
-        [PreviewField(55), VerticalGroup("Split/Meta1")]
-        public Texture2D forward;
-        [PreviewField(55), VerticalGroup("Split/Meta2")]
-        public Texture2D backwards;
-        [PreviewField(55), VerticalGroup("Split/Meta3")]
-        public Texture2D up;
-        [PreviewField(55), VerticalGroup("Split/Meta4")]
-        public Texture2D down;
-        [PreviewField(55), VerticalGroup("Split/Meta5")]
-        public Texture2D right;
-        [PreviewField(55), VerticalGroup("Split/Meta6")]
-        public Texture2D left;
+        [PreviewField(55,ObjectFieldAlignment.Left), VerticalGroup("Split/Meta1")]
+        public Texture forward;
+        [PreviewField(55,ObjectFieldAlignment.Left), VerticalGroup("Split/Meta1")]
+        public Texture backwards;
+        [PreviewField(55,ObjectFieldAlignment.Left), VerticalGroup("Split/Meta2")]
+        public Texture up;
+        [PreviewField(55,ObjectFieldAlignment.Left), VerticalGroup("Split/Meta2")]
+        public Texture down;
+        [PreviewField(55,ObjectFieldAlignment.Left), VerticalGroup("Split/Meta3")]
+        public Texture right;
+        [PreviewField(55,ObjectFieldAlignment.Left), VerticalGroup("Split/Meta3")]
+        public Texture left;
     }
 
     public static class BlockTextureExtensions
     {
-        public static Texture2D Index(this BlockTexture blockTexture, int index)
+        public static Texture Index(this BlockTexture blockTexture, int index)
         {
             return index switch
             {

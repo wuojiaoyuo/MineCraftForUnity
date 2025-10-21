@@ -22,18 +22,19 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   blockProperties:
-    Icon: {fileID: 2800000, guid: 1b4167d6446792a4799b997163c168be, type: 3}
+    Icon: {fileID: 2800000, guid: 93d2494ec2c3e394699b3647fec70bf0, type: 3}
     Block_Name: Dirt
     ID: minecraft:dirt
     BlockFlags: 0
+    blockMesh: {fileID: 11400000, guid: c77d2cb1d07c1614dadac7023ad6a6e8, type: 2}
     MoveResistance: 0.6
     LightOpacity: 0
     LightValue: 0
     Hardness: 4
   blockTexture:
-    forward: {fileID: 2800000, guid: 1b4167d6446792a4799b997163c168be, type: 3}
-    backwards: {fileID: 2800000, guid: 1b4167d6446792a4799b997163c168be, type: 3}
-    up: {fileID: 2800000, guid: 1b4167d6446792a4799b997163c168be, type: 3}
-    down: {fileID: 2800000, guid: 1b4167d6446792a4799b997163c168be, type: 3}
-    right: {fileID: 2800000, guid: 1b4167d6446792a4799b997163c168be, type: 3}
-    left: {fileID: 2800000, guid: 1b4167d6446792a4799b997163c168be, type: 3}
+    forward: {fileID: 2800000, guid: 93d2494ec2c3e394699b3647fec70bf0, type: 3}
+    backwards: {fileID: 2800000, guid: 93d2494ec2c3e394699b3647fec70bf0, type: 3}
+    up: {fileID: 2800000, guid: 93d2494ec2c3e394699b3647fec70bf0, type: 3}
+    down: {fileID: 2800000, guid: 93d2494ec2c3e394699b3647fec70bf0, type: 3}
+    right: {fileID: 2800000, guid: 93d2494ec2c3e394699b3647fec70bf0, type: 3}
+    left: {fileID: 2800000, guid: 93d2494ec2c3e394699b3647fec70bf0, type: 3}

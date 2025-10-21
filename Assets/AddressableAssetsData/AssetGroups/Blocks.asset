@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Blocks
+  m_EditorClassIdentifier: 
+  m_GroupName: Blocks
+  m_GUID: 6d1772d2a60ca23498ea892c84f76d5c
+  m_SerializeEntries:
+  - m_GUID: 137186f297907854d8d65068d0f26a48
+    m_Address: Assets/_minecraft/Block/Block/Stone.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Block
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 13728c44a67ae6b4985e657220c50073
+    m_Address: Assets/_minecraft/Block/Block/Air.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Block
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1722cb2fd934e4040882c2c47005b1a6
+    m_Address: Assets/_minecraft/Block/Block/Water.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Block
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 40daebf8920f3d2478568604e0f576d3
+    m_Address: Assets/_minecraft/Block/Block/Grass_Dirt.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Block
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 63a3b7228aa1d6342b6ab165d6ed4e68
+    m_Address: Assets/_minecraft/Block/Block/Glow_Stone.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Block
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9159419f45baef849b3551ea058393e7
+    m_Address: Assets/_minecraft/Block/Block/Sand.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Block
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbc17ddf880fbdb4698a28488fb4ef25
+    m_Address: Assets/_minecraft/Block/Block/Dirt.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Block
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d8e7deede28553d4c9a7411ec2312bf1
+    m_Address: Assets/_minecraft/Block/Block/BedRock.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Block
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 0fe09c4dddb0bab46ba0fdf9abc6bfa1, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 7bc143a9f93837f4481871db99a2ae2c, type: 2}
+    - {fileID: 11400000, guid: 169ba65a7cdd9284eb2e6e16ce6c5afb, type: 2}

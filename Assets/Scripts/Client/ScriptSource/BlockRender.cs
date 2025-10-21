@@ -8,7 +8,7 @@ namespace MC.Configurations
     {
         public ShowDirection showDirection;
         public Material[] facesMaterial { get; private set; } = new Material[6];
-        private SOBlock sOBlock;
+        private BlockType blockType;
         private Mesh mesh;
         private MeshFilter meshFilter;
         private MeshRenderer meshRenderer;
@@ -27,15 +27,15 @@ namespace MC.Configurations
         new Vector3(-0.5f, 0.5f, -0.5f)   // 7: 后上左
         };
 
-        public BlockRender(MeshFilter meshFilter, MeshRenderer meshRenderer, SOBlock sOBlock,ShowDirection showDirection)
+        public BlockRender(MeshFilter meshFilter, MeshRenderer meshRenderer, BlockType blockType,ShowDirection showDirection)
         {
             this.meshFilter = meshFilter;
             this.meshRenderer = meshRenderer;
-            this.sOBlock = sOBlock;
+            this.blockType = blockType;
             this.showDirection = showDirection;
 
             this.mesh = new Mesh();
-            this.mesh.name = $"{sOBlock.blockProperties.Block_Name}_Mesh";
+            this.mesh.name = $"{blockType.blockProperties.Block_Name}_Mesh";
             meshFilter.mesh = mesh;
             GenerateCube();
         }
@@ -43,6 +43,7 @@ namespace MC.Configurations
 
         public void GenerateCube()
         {
+            if (blockType.blockProperties.BlockFlags.HasFlag(BlockFlags.AlwaysInvisible)) return;
             if (mesh == null) return;
 
             List<Vector3> vertices = new List<Vector3>();
@@ -160,8 +161,9 @@ namespace MC.Configurations
             if (facesMaterial[faceIndex] != null) return;
 
             facesMaterial[faceIndex] = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            facesMaterial[faceIndex].SetFloat("_Smoothness", 0);
 
-            facesMaterial[faceIndex].mainTexture = sOBlock.blockTexture.Index(faceIndex);
+            facesMaterial[faceIndex].mainTexture = blockType.blockTexture.Index(faceIndex);
 
         }
 

@@ -22,18 +22,19 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   blockProperties:
-    Icon: {fileID: 2800000, guid: 54bb8a33821d11c4a8ca0cc7ca78a523, type: 3}
+    Icon: {fileID: 2800000, guid: 0a2a8844b169f76448939070aac16c6a, type: 3}
     Block_Name: Water
     ID: minecraft:water
     BlockFlags: 23
+    blockMesh: {fileID: 11400000, guid: c77d2cb1d07c1614dadac7023ad6a6e8, type: 2}
     MoveResistance: 0
     LightOpacity: 0.5
     LightValue: 0
     Hardness: -1
   blockTexture:
-    forward: {fileID: 2800000, guid: 54bb8a33821d11c4a8ca0cc7ca78a523, type: 3}
-    backwards: {fileID: 2800000, guid: 54bb8a33821d11c4a8ca0cc7ca78a523, type: 3}
-    up: {fileID: 2800000, guid: 54bb8a33821d11c4a8ca0cc7ca78a523, type: 3}
-    down: {fileID: 2800000, guid: 54bb8a33821d11c4a8ca0cc7ca78a523, type: 3}
-    right: {fileID: 2800000, guid: 54bb8a33821d11c4a8ca0cc7ca78a523, type: 3}
-    left: {fileID: 2800000, guid: 54bb8a33821d11c4a8ca0cc7ca78a523, type: 3}
+    forward: {fileID: 2800000, guid: 0a2a8844b169f76448939070aac16c6a, type: 3}
+    backwards: {fileID: 2800000, guid: 0a2a8844b169f76448939070aac16c6a, type: 3}
+    up: {fileID: 2800000, guid: 0a2a8844b169f76448939070aac16c6a, type: 3}
+    down: {fileID: 2800000, guid: 0a2a8844b169f76448939070aac16c6a, type: 3}
+    right: {fileID: 2800000, guid: 0a2a8844b169f76448939070aac16c6a, type: 3}
+    left: {fileID: 2800000, guid: 0a2a8844b169f76448939070aac16c6a, type: 3}
