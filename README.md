@@ -180,9 +180,9 @@
 
 ## 区块生成测试【2025.10.21】
 
-<video src="F:/Download/QQ20251021-203212.mp4"></video>
+<video src="README/QQ20251021-203212.mp4"></video>
 
-<video src="F:/Download/QQ20251021-20365.mp4"></video>
+<video src="README/QQ20251021-20365.mp4"></video>
 
 区块测试下来，单个区块的渲染压力非常打，Block是以实体的方式渲染出来，测试之后确实卡顿压力打，后续应该针对方块与方块之间进行面剔除，以及mesh合并，打算将block的mesh数据抽象出来，用来合成Chunkmesh减少渲染压力，但是这样如何处理动态方块变更是个问题，需要做相应的试验。
 
