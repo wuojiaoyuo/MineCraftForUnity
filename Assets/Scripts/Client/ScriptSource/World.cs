@@ -12,7 +12,7 @@ namespace MC
     public class World : MonoBehaviour
     {
         //存储着世界中所有的Chunk
-        public static List<Chunk> chunks;
+        public static List<ChunkData> chunks;
         public int ChunkWidth; //每个Chunk的长宽Size
         public int ChunkHeight;//每个Chunk的高度
         public int baseHeight = 9;//最小生成高度
@@ -34,7 +34,7 @@ namespace MC
         public static World Instance { get; private set; }
         void Awake()
         {
-            chunks = new List<Chunk>();
+            chunks = new List<ChunkData>();
             if (Instance == null)
                 Instance = this;
         }
@@ -77,22 +77,47 @@ namespace MC
 
         }
 
+        public static void UpdateWorld(Vector3 PlayerPos)
+        {
+            int viewRange = 30;//TODO:全局配置
+            for (float x = PlayerPos.x - viewRange; x < PlayerPos.x + viewRange; x += World.Instance.ChunkWidth)
+            {
+                for (float z = PlayerPos.z - viewRange; z < PlayerPos.z + viewRange; z += World.Instance.ChunkWidth)
+                {
+                    Vector3 pos = new Vector3(x, 0, z);
+                    pos.x = Mathf.Floor(pos.x / (float)World.Instance.ChunkWidth) * World.Instance.ChunkWidth;
+                    pos.z = Mathf.Floor(pos.z / (float)World.Instance.ChunkWidth) * World.Instance.ChunkWidth;
+
+                    ChunkData chunkData = World.GetChunk(pos);
+                    if (chunkData != null) continue;
+
+                    //chunk = (Chunk)Instantiate(chunkPrefab, pos, Quaternion.identity);
+
+                    World.Instance.AddChunk(pos);
+                }
+            }
+        }
+
         public void AddChunk(Vector3 pos)
         {
             if (!typesHasLoaded) return;
-            GameObject ChunkObj = new GameObject($"Chunk_{chunks.Count}");
-            ChunkObj.transform.position = pos;
-            Chunk chunk = ChunkObj.AddComponent<Chunk>();
-            chunk.Init(ChunkWidth, ChunkHeight);
+
+            ChunkData chunkData = new ChunkData(ChunkWidth, ChunkHeight, pos);
+            BuildChunk(chunkData);
+            chunks.Add(chunkData);
+
+
+            Chunk chunk = ChunkPool.Instance.GetChunk();
+            chunk.gameObject.name = $"{chunks.Count}_Chunk_[{pos.x},{pos.z}]";
+            chunk.transform.SetParent(this.transform);
+            chunk.Init(chunkData);
             chunk.meshRenderer.material = WorldMaterial;
-            BuildChunk(chunk);
-            chunks.Add(chunk);
         }
 
 
-        public void BuildChunk(Chunk chunk)
+        public void BuildChunk(ChunkData chunkData)
         {
-            chunk.chunkData.ChunkMesh = new Mesh();
+            chunkData.ChunkMesh = new Mesh();
             List<Vector3> verts = new List<Vector3>();
             List<Vector2> uvs = new List<Vector2>();
             List<int> tris = new List<int>();
@@ -103,7 +128,7 @@ namespace MC
                 {
                     for (int z = 0; z < ChunkWidth; z++)
                     {
-                        chunk.chunkData.BlockIDs[x, y, z] = GenerateBlockType(new Vector3(x, y, z) + chunk.transform.position);
+                        chunkData.BlockIDs[x, y, z] = GenerateBlockType(new Vector3(x, y, z) + chunkData.worldPosition);
                     }
                 }
             }
@@ -113,18 +138,15 @@ namespace MC
                 {
                     for (int z = 0; z < ChunkWidth; z++)
                     {
-                        chunk.BuildBlock(x, y, z, verts, uvs, tris);
+                        chunkData.BuildBlock(x, y, z, verts, uvs, tris);
                     }
                 }
             }
-            chunk.chunkData.ChunkMesh.vertices = verts.ToArray();
-            chunk.chunkData.ChunkMesh.uv = uvs.ToArray();
-            chunk.chunkData.ChunkMesh.triangles = tris.ToArray();
-            chunk.chunkData.ChunkMesh.RecalculateBounds();
-            chunk.chunkData.ChunkMesh.RecalculateNormals();
-
-            chunk.meshFilter.mesh = chunk.chunkData.ChunkMesh;
-            chunk.meshCollider.sharedMesh = chunk.chunkData.ChunkMesh;
+            chunkData.ChunkMesh.vertices = verts.ToArray();
+            chunkData.ChunkMesh.uv = uvs.ToArray();
+            chunkData.ChunkMesh.triangles = tris.ToArray();
+            chunkData.ChunkMesh.RecalculateBounds();
+            chunkData.ChunkMesh.RecalculateNormals();
         }
 
         private void InitOffset()
@@ -160,14 +182,14 @@ namespace MC
             return Mathf.FloorToInt(noise0 + noise1 + noise2 + baseHeight);
         }
 
-        public static Chunk GetChunk(Vector3 wPos)
+        public static ChunkData GetChunk(Vector3 wPos)
         {
             for (int i = 0; i < chunks.Count; i++)
             {
-                Vector3 tempPos = chunks[i].transform.position;
+                Vector3 tempPos = chunks[i].worldPosition;
 
                 //wPos是否超出了Chunk的XZ平面的范围
-                if ((wPos.x < tempPos.x) || (wPos.z < tempPos.z) || (wPos.x >= tempPos.x + chunks[i].chunkData.chunkSize) || (wPos.z >= tempPos.z + chunks[i].chunkData.chunkSize))
+                if ((wPos.x < tempPos.x) || (wPos.z < tempPos.z) || (wPos.x >= tempPos.x + chunks[i].chunkSize) || (wPos.z >= tempPos.z + chunks[i].chunkSize))
                     continue;
 
                 return chunks[i];

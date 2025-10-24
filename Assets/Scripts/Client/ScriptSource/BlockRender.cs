@@ -4,193 +4,109 @@ using UnityEngine;
 
 namespace MC.Configurations
 {
-    public class  BlockRender
+    public static class  BlockRender
     {
-        public Material[] facesMaterial { get; private set; } = new Material[6];
-        private BlockType blockType;
-        private Mesh mesh;
-
-
-        // 基础顶点定义（局部坐标）
-        private Vector3[] baseVertices = new Vector3[8]
+        public static String GetBlockType(this ChunkData chunkData, int x, int y, int z)
         {
-        new Vector3(-0.5f, -0.5f, 0.5f),  // 0: 前下左
-        new Vector3(0.5f, -0.5f, 0.5f),   // 1: 前下右
-        new Vector3(0.5f, 0.5f, 0.5f),    // 2: 前上右
-        new Vector3(-0.5f, 0.5f, 0.5f),   // 3: 前上左
-        new Vector3(-0.5f, -0.5f, -0.5f), // 4: 后下左
-        new Vector3(0.5f, -0.5f, -0.5f),  // 5: 后下右
-        new Vector3(0.5f, 0.5f, -0.5f),   // 6: 后上右
-        new Vector3(-0.5f, 0.5f, -0.5f)   // 7: 后上左
-        };
+            if (y < 0 || y > chunkData.chunkHeight - 1)
+            {
+                return "Air";
+            }
+
+            //当前位置是否在Chunk内
+            if ((x < 0) || (z < 0) || (x >= chunkData.chunkSize) || (z >= chunkData.chunkSize))
+            {
+                var id = World.Instance.GenerateBlockType(new Vector3(x, y, z) + chunkData.worldPosition);
+                return id;
+            }
+            return chunkData.BlockIDs[x, y, z];
+        }
+        
+         public static void BuildBlock(this ChunkData chunkData,int x, int y, int z, List<Vector3> verts, List<Vector2> uvs, List<int> tris)
+        {
+            if (chunkData.BlockIDs[x, y, z] == "Air") return;
+
+            BlockType type = World.types[chunkData.BlockIDs[x, y, z]];
+
+            //left
+            if (chunkData.CheckNeedBuildFace(x - 1, y, z))
+                BuildFace(type.blockTexture.left.uvRect, new Vector3(x - 0.5f, y + 0.5f, z - 0.5f), Vector3.forward, Vector3.up, true, verts, uvs, tris);
+            //right
+            if (chunkData.CheckNeedBuildFace(x + 1, y, z))
+                BuildFace(type.blockTexture.right.uvRect, new Vector3(x + 0.5f, y + 0.5f, z - 0.5f), Vector3.forward, Vector3.up, false, verts, uvs, tris);
+
+            //down
+            if (chunkData.CheckNeedBuildFace(x, y - 1, z))
+                BuildFace(type.blockTexture.down.uvRect, new Vector3(x - 0.5f, y + 0.5f, z - 0.5f), Vector3.forward, Vector3.right, false, verts, uvs, tris);
+            //up
+            if (chunkData.CheckNeedBuildFace(x, y + 1, z))
+                BuildFace(type.blockTexture.up.uvRect, new Vector3(x - 0.5f, y + 1.5f, z - 0.5f), Vector3.forward, Vector3.right, true, verts, uvs, tris);
+
+            //backwards
+            if (chunkData.CheckNeedBuildFace(x, y, z - 1))
+                BuildFace(type.blockTexture.backwards.uvRect, new Vector3(x - 0.5f, y + 0.5f, z - 0.5f), Vector3.right, Vector3.up, false, verts, uvs, tris);
+            //forward
+            if (chunkData.CheckNeedBuildFace(x, y, z + 1))
+                BuildFace(type.blockTexture.forward.uvRect, new Vector3(x - 0.5f, y + 0.5f, z + 0.5f), Vector3.right, Vector3.up, true, verts, uvs, tris);
+        }
+
+        private static bool CheckNeedBuildFace(this ChunkData chunkData,int x, int y, int z)
+        {
+            if (y < 0) return false;
+            var type = chunkData.GetBlockType(x, y, z);
+            switch (type)
+            {
+                case "Air":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
+        /// 构建一个方块的面
+        /// </summary>
+        /// <param name="uvRect">UV贴图区域</param>
+        /// <param name="corner">方块顶点的起始位置</param>
+        /// <param name="up">向上的方向向量</param>
+        /// <param name="right">向右的方向向量</param>
+        /// <param name="reversed">是否翻转三角形顺序</param>
+        /// <param name="verts">顶点列表</param>
+        /// <param name="uvs">UV坐标列表</param>
+        /// <param name="tris">三角形索引列表</param>
+        private static void BuildFace(Rect uvRect, Vector3 corner, Vector3 up, Vector3 right, bool reversed, List<Vector3> verts, List<Vector2> uvs, List<int> tris)
+        {
+            int index = verts.Count;
+
+            verts.Add(corner);
+            verts.Add(corner + up);
+            verts.Add(corner + up + right);
+            verts.Add(corner + right);
 
 
+            uvs.Add(new Vector2(uvRect.x, uvRect.y));
+            uvs.Add(new Vector2(uvRect.x + uvRect.width, uvRect.y));
+            uvs.Add(new Vector2(uvRect.x + uvRect.width, uvRect.y + uvRect.height));
+            uvs.Add(new Vector2(uvRect.x, uvRect.y + uvRect.height));
 
-        // public void GenerateCube()
-        // {
-        //     if (blockType.blockProperties.BlockFlags.HasFlag(BlockFlags.AlwaysInvisible)) return;
-        //     if (mesh == null) return;
-
-        //     List<Vector3> vertices = new List<Vector3>();
-        //     List<Vector3> normals = new List<Vector3>();
-        //     List<Vector2> uvs = new List<Vector2>();
-        //     activeMaterials.Clear();
-
-        //     // 存储每个面的三角形索引
-        //     List<int>[] faceTriangles = new List<int>[6];
-        //     for (int i = 0; i < 6; i++) faceTriangles[i] = new List<int>();
-
-        //     int currentVertexIndex = 0;
-        //     int subMeshIndex = 0;
-
-        //     // 前面 (Z正方向)
-        //     if (showDirection.HasFlag(ShowDirection.foreward))
-        //     {
-        //         AddFace(vertices, normals, uvs,
-        //                 new int[] { 0, 1, 2, 3 }, Vector3.forward,
-        //                 faceTriangles[0], ref currentVertexIndex);
-
-        //         CreateFaceMaterial(0);
-        //         activeMaterials.Add(facesMaterial[0]);
-        //         subMeshIndex++;
-        //     }
-
-        //     // 后面 (Z负方向)
-        //     if (showDirection.HasFlag(ShowDirection.backwards))
-        //     {
-        //         AddFace(vertices, normals, uvs,
-        //                 new int[] { 5, 4, 7, 6 }, Vector3.back,
-        //                 faceTriangles[1], ref currentVertexIndex);
-
-        //         CreateFaceMaterial(1);
-        //         activeMaterials.Add(facesMaterial[1]);
-        //         subMeshIndex++;
-        //     }
-
-        //     // 上面 (Y正方向)
-        //     if (showDirection.HasFlag(ShowDirection.up))
-        //     {
-        //         AddFace(vertices, normals, uvs,
-        //                 new int[] { 3, 2, 6, 7 }, Vector3.up,
-        //                 faceTriangles[2], ref currentVertexIndex);
-
-        //         CreateFaceMaterial(2);
-        //         activeMaterials.Add(facesMaterial[2]);
-        //         subMeshIndex++;
-        //     }
-
-        //     // 下面 (Y负方向)
-        //     if (showDirection.HasFlag(ShowDirection.down))
-        //     {
-        //         AddFace(vertices, normals, uvs,
-        //                 new int[] { 1, 0, 4, 5 }, Vector3.down,
-        //                 faceTriangles[3], ref currentVertexIndex);
-
-        //         CreateFaceMaterial(3);
-        //         activeMaterials.Add(facesMaterial[3]);
-        //         subMeshIndex++;
-        //     }
-
-        //     // 右面 (X正方向)
-        //     if (showDirection.HasFlag(ShowDirection.right))
-        //     {
-        //         AddFace(vertices, normals, uvs,
-        //                 new int[] { 1, 5, 6, 2 }, Vector3.right,
-        //                 faceTriangles[4], ref currentVertexIndex);
-
-        //         CreateFaceMaterial(4);
-        //         activeMaterials.Add(facesMaterial[4]);
-        //         subMeshIndex++;
-        //     }
-
-        //     // 左面 (X负方向)
-        //     if (showDirection.HasFlag(ShowDirection.left))
-        //     {
-        //         AddFace(vertices, normals, uvs,
-        //                 new int[] { 4, 0, 3, 7 }, Vector3.left,
-        //                 faceTriangles[5], ref currentVertexIndex);
-
-        //         CreateFaceMaterial(5);
-        //         activeMaterials.Add(facesMaterial[5]);
-        //         subMeshIndex++;
-        //     }
-
-        //     // 应用网格数据
-        //     mesh.Clear();
-        //     mesh.vertices = vertices.ToArray();
-        //     mesh.normals = normals.ToArray();
-        //     mesh.uv = uvs.ToArray();
-
-        //     // 设置子网格数量和三角形
-        //     mesh.subMeshCount = subMeshIndex;
-        //     int activeSubMesh = 0;
-
-        //     for (int i = 0; i < 6; i++)
-        //     {
-        //         if (showDirection.Has(i) && faceTriangles[i].Count > 0)
-        //         {
-        //             mesh.SetTriangles(faceTriangles[i].ToArray(), activeSubMesh);
-        //             activeSubMesh++;
-        //         }
-        //     }
-
-        //     mesh.RecalculateBounds();
-        //     mesh.RecalculateTangents();
-
-        //     // 设置材质
-        //     meshRenderer.materials = activeMaterials.ToArray();
-        // }
-
-        // private void CreateFaceMaterial(int faceIndex)
-        // {
-        //     if (facesMaterial[faceIndex] != null) return;
-
-        //     facesMaterial[faceIndex] = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-        //     facesMaterial[faceIndex].SetFloat("_Smoothness", 0);
-
-        //     facesMaterial[faceIndex].mainTexture = blockType.blockTexture.Index(faceIndex);
-
-        // }
-
-        // private void AddFace(List<Vector3> vertices, List<Vector3> normals,
-        //                     List<Vector2> uvs, int[] vertexIndices, Vector3 normal,
-        //                     List<int> faceTriangles, ref int startIndex)
-        // {
-        //     // 添加四个顶点
-        //     for (int i = 0; i < 4; i++)
-        //     {
-        //         vertices.Add(baseVertices[vertexIndices[i]]);
-        //         normals.Add(normal);
-        //     }
-
-        //     // 设置UV坐标
-        //     uvs.Add(new Vector2(0, 0));
-        //     uvs.Add(new Vector2(1, 0));
-        //     uvs.Add(new Vector2(1, 1));
-        //     uvs.Add(new Vector2(0, 1));
-
-        //     // 添加两个三角形
-        //     faceTriangles.Add(startIndex);
-        //     faceTriangles.Add(startIndex + 1);
-        //     faceTriangles.Add(startIndex + 2);
-
-        //     faceTriangles.Add(startIndex);
-        //     faceTriangles.Add(startIndex + 2);
-        //     faceTriangles.Add(startIndex + 3);
-
-        //     startIndex += 4;
-        // }
-
-        // #region Public Methoes
-
-        // // 公共方法：设置面状态
-        // public void SetFaceEnabled(ShowDirection showDirection)
-        // {
-        //     this.showDirection = showDirection;
-        //     GenerateCube();
-        // }
-
-        // public Mesh GetMesh() => mesh;
-        // #endregion
+            if (reversed)
+            {
+                tris.Add(index + 0);
+                tris.Add(index + 1);
+                tris.Add(index + 2);
+                tris.Add(index + 2);
+                tris.Add(index + 3);
+                tris.Add(index + 0);
+            }
+            else
+            {
+                tris.Add(index + 1);
+                tris.Add(index + 0);
+                tris.Add(index + 2);
+                tris.Add(index + 3);
+                tris.Add(index + 2);
+                tris.Add(index + 0);
+            }
+        }
     }
 }
