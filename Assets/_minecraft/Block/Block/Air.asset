@@ -28,7 +28,7 @@ MonoBehaviour:
     BlockFlags: 32
     blockMesh: {fileID: 0}
     MoveResistance: 0
-    LightOpacity: 0
+    LightOpacity: 1
     LightValue: 0
     Hardness: 0
   blockTexture:

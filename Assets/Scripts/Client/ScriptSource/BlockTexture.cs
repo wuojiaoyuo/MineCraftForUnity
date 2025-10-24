@@ -8,34 +8,29 @@ namespace MC.Configurations
     public class BlockTexture
     {
         [HorizontalGroup("Split")]
-        [PreviewField(55,ObjectFieldAlignment.Left), VerticalGroup("Split/Meta1")]
-        public Texture forward;
-        [PreviewField(55,ObjectFieldAlignment.Left), VerticalGroup("Split/Meta1")]
-        public Texture backwards;
-        [PreviewField(55,ObjectFieldAlignment.Left), VerticalGroup("Split/Meta2")]
-        public Texture up;
-        [PreviewField(55,ObjectFieldAlignment.Left), VerticalGroup("Split/Meta2")]
-        public Texture down;
-        [PreviewField(55,ObjectFieldAlignment.Left), VerticalGroup("Split/Meta3")]
-        public Texture right;
-        [PreviewField(55,ObjectFieldAlignment.Left), VerticalGroup("Split/Meta3")]
-        public Texture left;
+        [ VerticalGroup("Split/Meta1")]
+        public TextureData forward;
+        [VerticalGroup("Split/Meta1")]
+        public TextureData backwards;
+        [VerticalGroup("Split/Meta2")]
+        public TextureData up;
+        [VerticalGroup("Split/Meta2")]
+        public TextureData down;
+        [VerticalGroup("Split/Meta3")]
+        public TextureData right;
+        [VerticalGroup("Split/Meta3")]
+        public TextureData left;
     }
-
+    [Serializable]
+    public struct TextureData
+    {
+        [PreviewField(55, ObjectFieldAlignment.Left)]
+        public Texture2D texture;
+        [ReadOnly]
+        public Rect uvRect;
+    }
     public static class BlockTextureExtensions
     {
-        public static Texture Index(this BlockTexture blockTexture, int index)
-        {
-            return index switch
-            {
-                0 => blockTexture.forward,
-                1 => blockTexture.backwards,
-                2 => blockTexture.up,
-                3 => blockTexture.down,
-                4 => blockTexture.right,
-                5 => blockTexture.left,
-                _ => throw new Exception("None")
-            };
-        }
+      
     }
 }

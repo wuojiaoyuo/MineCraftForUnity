@@ -24,17 +24,58 @@ MonoBehaviour:
   blockProperties:
     Icon: {fileID: 2800000, guid: 6226cbbb3f3ac144cb9b8eff5e76767d, type: 3}
     Block_Name: Sand
-    ID: minecraft:sand
+    ID: sand
     BlockFlags: 0
-    blockMesh: {fileID: 11400000, guid: c77d2cb1d07c1614dadac7023ad6a6e8, type: 2}
     MoveResistance: 0.6
     LightOpacity: 0
     LightValue: 0
     Hardness: 4
   blockTexture:
-    forward: {fileID: 0}
-    backwards: {fileID: 0}
-    up: {fileID: 0}
-    down: {fileID: 0}
-    right: {fileID: 0}
-    left: {fileID: 0}
+    forward:
+      texture: {fileID: 2800000, guid: 6226cbbb3f3ac144cb9b8eff5e76767d, type: 3}
+      uvRect:
+        serializedVersion: 2
+        x: 0.28125
+        y: 0.28125
+        width: 0.25
+        height: 0.25
+    backwards:
+      texture: {fileID: 2800000, guid: 6226cbbb3f3ac144cb9b8eff5e76767d, type: 3}
+      uvRect:
+        serializedVersion: 2
+        x: 0.28125
+        y: 0.28125
+        width: 0.25
+        height: 0.25
+    up:
+      texture: {fileID: 2800000, guid: 6226cbbb3f3ac144cb9b8eff5e76767d, type: 3}
+      uvRect:
+        serializedVersion: 2
+        x: 0.28125
+        y: 0.28125
+        width: 0.25
+        height: 0.25
+    down:
+      texture: {fileID: 2800000, guid: 6226cbbb3f3ac144cb9b8eff5e76767d, type: 3}
+      uvRect:
+        serializedVersion: 2
+        x: 0.28125
+        y: 0.28125
+        width: 0.25
+        height: 0.25
+    right:
+      texture: {fileID: 2800000, guid: 6226cbbb3f3ac144cb9b8eff5e76767d, type: 3}
+      uvRect:
+        serializedVersion: 2
+        x: 0.28125
+        y: 0.28125
+        width: 0.25
+        height: 0.25
+    left:
+      texture: {fileID: 2800000, guid: 6226cbbb3f3ac144cb9b8eff5e76767d, type: 3}
+      uvRect:
+        serializedVersion: 2
+        x: 0.28125
+        y: 0.28125
+        width: 0.25
+        height: 0.25

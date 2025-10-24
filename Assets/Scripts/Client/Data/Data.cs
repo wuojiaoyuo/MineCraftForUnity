@@ -94,5 +94,19 @@ namespace MC.Configurations
                 _ => false
             };
         }
+
+        public static ShowDirection DirToShow(this Direction direction)
+        {
+            return direction switch
+            {
+                Direction.up => ShowDirection.up,
+                Direction.down => ShowDirection.down,
+                Direction.right => ShowDirection.right,
+                Direction.left => ShowDirection.left,
+                Direction.foreward => ShowDirection.foreward,
+                Direction.backwards => ShowDirection.backwards,
+                _ => throw new Exception("Invalid input direction")
+            };
+        }
     }
 }

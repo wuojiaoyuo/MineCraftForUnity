@@ -26,15 +26,56 @@ MonoBehaviour:
     Block_Name: Grass_Dirt
     ID: grass_dirt
     BlockFlags: 0
-    blockMesh: {fileID: 11400000, guid: c77d2cb1d07c1614dadac7023ad6a6e8, type: 2}
     MoveResistance: 0.6
     LightOpacity: 0
     LightValue: 0
     Hardness: 4
   blockTexture:
-    forward: {fileID: 2800000, guid: 3960eeff40728de4cab94b15b90ad64a, type: 3}
-    backwards: {fileID: 2800000, guid: 3960eeff40728de4cab94b15b90ad64a, type: 3}
-    up: {fileID: 2800000, guid: ce893e34eb279a148b35f4c2cdf2cada, type: 3}
-    down: {fileID: 2800000, guid: 93d2494ec2c3e394699b3647fec70bf0, type: 3}
-    right: {fileID: 2800000, guid: 3960eeff40728de4cab94b15b90ad64a, type: 3}
-    left: {fileID: 2800000, guid: 3960eeff40728de4cab94b15b90ad64a, type: 3}
+    forward:
+      texture: {fileID: 2800000, guid: 3960eeff40728de4cab94b15b90ad64a, type: 3}
+      uvRect:
+        serializedVersion: 2
+        x: 0
+        y: 0.5625
+        width: 0.25
+        height: 0.25
+    backwards:
+      texture: {fileID: 2800000, guid: 3960eeff40728de4cab94b15b90ad64a, type: 3}
+      uvRect:
+        serializedVersion: 2
+        x: 0
+        y: 0.5625
+        width: 0.25
+        height: 0.25
+    up:
+      texture: {fileID: 2800000, guid: ce893e34eb279a148b35f4c2cdf2cada, type: 3}
+      uvRect:
+        serializedVersion: 2
+        x: 0
+        y: 0.28125
+        width: 0.25
+        height: 0.25
+    down:
+      texture: {fileID: 2800000, guid: 93d2494ec2c3e394699b3647fec70bf0, type: 3}
+      uvRect:
+        serializedVersion: 2
+        x: 0.28125
+        y: 0
+        width: 0.25
+        height: 0.25
+    right:
+      texture: {fileID: 2800000, guid: 3960eeff40728de4cab94b15b90ad64a, type: 3}
+      uvRect:
+        serializedVersion: 2
+        x: 0
+        y: 0.5625
+        width: 0.25
+        height: 0.25
+    left:
+      texture: {fileID: 2800000, guid: 3960eeff40728de4cab94b15b90ad64a, type: 3}
+      uvRect:
+        serializedVersion: 2
+        x: 0
+        y: 0.5625
+        width: 0.25
+        height: 0.25

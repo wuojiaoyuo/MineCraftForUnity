@@ -33,9 +33,6 @@ namespace MC.Configurations
             tree.Add("Blocks", new BlockTable(BlockTypeOverview.Instance.AllBlockTypes));
 
             tree.AddAllAssetsAtPath("Blocks", "Assets/_minecraft/Block/Block", typeof(BlockType), true, true);
-
-            tree.AddAllAssetsAtPath("", "Assets/_minecraft/Block/", typeof(BlockMeshData), true)
-                .ForEach(this.AddDragHandles);
             tree.AddAllAssetsAtPath("", "Assets/_minecraft/Block/", typeof(Texture2D), true)
                 .ForEach(this.AddDragHandles);
 
@@ -69,6 +66,10 @@ namespace MC.Configurations
                         obj.blockProperties.Block_Name = obj.name;
                         base.TrySelectMenuItemWithObject(obj); // Selects the newly created item in the editor
                     });
+                }
+                if (SirenixEditorGUI.ToolbarButton(new GUIContent("Build Texture Data")))
+                {
+                    BlockTypeOverview.Instance.GenerateTextureAtlas();
                 }
             }
             SirenixEditorGUI.EndHorizontalToolbar();

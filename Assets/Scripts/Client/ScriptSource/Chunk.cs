@@ -10,109 +10,119 @@ namespace MC
     public class Chunk : MonoBehaviour
     {
         public ChunkData chunkData;
-        public static Dictionary<string, BlockType> types = new Dictionary<string, BlockType>();
-        bool Loaded = false;
-        public void LoadAllAssetsByLabel(string label)
-        {
-            // 开始异步加载所有带有该标签的资源
-            AsyncOperationHandle<IList<BlockType>> handle =
-                Addressables.LoadAssetsAsync<BlockType>(label, null);
+        public MeshRenderer meshRenderer;
+        public MeshCollider meshCollider;
+        public MeshFilter meshFilter;
 
-            handle.Completed += OnAllAssetsLoaded;
-        }
-
-        private void OnAllAssetsLoaded(AsyncOperationHandle<IList<BlockType>> handle)
+        public void Init(int chunkSize, int chunkHeight)
         {
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-            {
-                IList<BlockType> assets = handle.Result;
-                foreach (BlockType asset in assets)
-                {
-                    if (!types.ContainsKey(asset.blockProperties.Block_Name))
-                        types.Add(asset.blockProperties.Block_Name, asset);
-                    Debug.Log($"加载资源: {asset.name}");
-                    // 实例化或处理资源
-                }
-            }
-            else
-            {
-                Debug.LogError($"加载失败: {handle.OperationException}");
-            }
-            Addressables.Release(handle);
-            Loaded = true;
-        }
-        IEnumerator Start()
-        {
-            LoadAllAssetsByLabel("Block");
-            yield return new WaitUntil(() => Loaded);
-            chunkData = new ChunkData(16, 100, new Vector3Int(0, 0, 0));
-            WorldGenerate.GenerateVoxels(chunkData, .03f, 50);
-            for (int j = 0; j < chunkData.blocks.Length; j = j + 100)
-            {
-                for (int i = j; i < j + 100; i++)
-                {
-                    GameObject block = new GameObject(chunkData.blocks[i].blockProperties.Block_Name);
-                    Block blockrender = block.AddComponent<Block>();
-                    blockrender.showDirection = ShowDirection.All;
-                    blockrender.blockType = chunkData.blocks[i];
-                    blockrender.Render(GetPostitionFromIndex(chunkData, i));
-                }
-                yield return null;
-            }
-        }
-        public static void SetBlock(ChunkData chunkData, Vector3Int localPosition, BlockType block)
-        {
-            if (InRange(chunkData, localPosition.x) && InRangeHeight(chunkData, localPosition.y) && InRange(chunkData, localPosition.z))
-            {
-                int index = GetIndexFromPosition(chunkData, localPosition.x, localPosition.y, localPosition.z);
-                chunkData.blocks[index] = block;
-            }
-            else
-            {
-                throw new Exception("Need to ask World for appropiate chunk");
-            }
+            meshFilter = gameObject.AddComponent<MeshFilter>();
+            meshRenderer = gameObject.AddComponent<MeshRenderer>();
+            meshCollider = gameObject.AddComponent<MeshCollider>();
+            chunkData = new ChunkData(chunkSize, chunkHeight, this.transform.position);
         }
 
-        private static int GetIndexFromPosition(ChunkData chunkData, int x, int y, int z)
+        public String GetBlockType(int x, int y, int z)
         {
-            return x + chunkData.chunkSize * y + chunkData.chunkSize * chunkData.chunkHeight * z;
+            if (y < 0 || y > chunkData.chunkHeight - 1)
+            {
+                return "Air";
+            }
+
+            //当前位置是否在Chunk内
+            if ((x < 0) || (z < 0) || (x >= chunkData.chunkSize) || (z >= chunkData.chunkSize))
+            {
+                var id = World.Instance.GenerateBlockType(new Vector3(x, y, z) + transform.position);
+                return id;
+            }
+            return chunkData.BlockIDs[x, y, z];
         }
 
-        private static Vector3Int GetPostitionFromIndex(ChunkData chunkData, int index)
+        public void BuildBlock(int x, int y, int z, List<Vector3> verts, List<Vector2> uvs, List<int> tris)
         {
-            int x = index % chunkData.chunkSize;
-            int y = (index / chunkData.chunkSize) % chunkData.chunkHeight;
-            int z = index / (chunkData.chunkSize * chunkData.chunkHeight);
-            return new Vector3Int(x, y, z);
+            if (chunkData.BlockIDs[x, y, z] == "Air") return;
+
+            BlockType type = World.types[chunkData.BlockIDs[x, y, z]];
+
+            //left
+            if (CheckNeedBuildFace(x - 1, y, z))
+                BuildFace(type.blockTexture.left.uvRect, new Vector3(x - 0.5f, y + 0.5f, z - 0.5f), Vector3.forward, Vector3.up, true, verts, uvs, tris);
+            //right
+            if (CheckNeedBuildFace(x + 1, y, z))
+                BuildFace(type.blockTexture.right.uvRect, new Vector3(x + 0.5f, y + 0.5f, z - 0.5f), Vector3.forward, Vector3.up, false, verts, uvs, tris);
+
+            //down
+            if (CheckNeedBuildFace(x, y - 1, z))
+                BuildFace(type.blockTexture.down.uvRect, new Vector3(x - 0.5f, y + 0.5f, z - 0.5f), Vector3.forward, Vector3.right, false, verts, uvs, tris);
+            //up
+            if (CheckNeedBuildFace(x, y + 1, z))
+                BuildFace(type.blockTexture.up.uvRect, new Vector3(x - 0.5f, y + 1.5f, z - 0.5f), Vector3.forward, Vector3.right, true, verts, uvs, tris);
+
+            //backwards
+            if (CheckNeedBuildFace(x, y, z - 1))
+                BuildFace(type.blockTexture.backwards.uvRect, new Vector3(x - 0.5f, y + 0.5f, z - 0.5f), Vector3.right, Vector3.up, false, verts, uvs, tris);
+            //forward
+            if (CheckNeedBuildFace(x, y, z + 1))
+                BuildFace(type.blockTexture.forward.uvRect, new Vector3(x - 0.5f, y + 0.5f, z + 0.5f), Vector3.right, Vector3.up, true, verts, uvs, tris);
+        }
+
+        bool CheckNeedBuildFace(int x, int y, int z)
+        {
+            if (y < 0) return false;
+            var type = GetBlockType(x, y, z);
+            switch (type)
+            {
+                case "Air":
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         /// <summary>
-        /// 在Chunk坐标系下，判断Block是否超出所属Chunk的界限
+        /// 构建一个方块的面
         /// </summary>
-        /// <param name="chunkData"></param>
-        /// <param name="axisCoordinate"></param>
-        /// <returns></returns>
-        private static bool InRange(ChunkData chunkData, int axisCoordinate)
+        /// <param name="uvRect">UV贴图区域</param>
+        /// <param name="corner">方块顶点的起始位置</param>
+        /// <param name="up">向上的方向向量</param>
+        /// <param name="right">向右的方向向量</param>
+        /// <param name="reversed">是否翻转三角形顺序</param>
+        /// <param name="verts">顶点列表</param>
+        /// <param name="uvs">UV坐标列表</param>
+        /// <param name="tris">三角形索引列表</param>
+        void BuildFace(Rect uvRect, Vector3 corner, Vector3 up, Vector3 right, bool reversed, List<Vector3> verts, List<Vector2> uvs, List<int> tris)
         {
-            if (axisCoordinate < 0 || axisCoordinate >= chunkData.chunkSize)
-                return false;
+            int index = verts.Count;
 
-            return true;
+            verts.Add(corner);
+            verts.Add(corner + up);
+            verts.Add(corner + up + right);
+            verts.Add(corner + right);
+
+
+            uvs.Add(new Vector2(uvRect.x, uvRect.y));
+            uvs.Add(new Vector2(uvRect.x + uvRect.width, uvRect.y));
+            uvs.Add(new Vector2(uvRect.x + uvRect.width, uvRect.y + uvRect.height));
+            uvs.Add(new Vector2(uvRect.x, uvRect.y + uvRect.height));
+
+            if (reversed)
+            {
+                tris.Add(index + 0);
+                tris.Add(index + 1);
+                tris.Add(index + 2);
+                tris.Add(index + 2);
+                tris.Add(index + 3);
+                tris.Add(index + 0);
+            }
+            else
+            {
+                tris.Add(index + 1);
+                tris.Add(index + 0);
+                tris.Add(index + 2);
+                tris.Add(index + 3);
+                tris.Add(index + 2);
+                tris.Add(index + 0);
+            }
         }
-
-        /// <summary>
-        /// 在Chunk坐标系下，判断Block是否超出所属Chunk的界限（高度）
-        /// </summary>
-        /// <param name="chunkData"></param>
-        /// <param name="ycoordinate"></param>
-        /// <returns></returns>
-        private static bool InRangeHeight(ChunkData chunkData, int ycoordinate)
-        {
-            if (ycoordinate < 0 || ycoordinate >= chunkData.chunkHeight)
-                return false;
-
-            return true;
-        }
-
     }
 }
